@@ -1,0 +1,2 @@
+/* components/navbar/navbar.wxss */
+@import '/style/weui.wxss';
