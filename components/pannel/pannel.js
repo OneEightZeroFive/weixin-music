@@ -5,14 +5,25 @@ Component({
    * 组件的属性列表
    */
   properties: {
-
+    channel: {
+      type: String,//String, Number, Boolean, Object, Array, null
+      value: "hot",
+      observer: function (newVal, oldVal, changedPath) {
+      }
+    }
   },
 
   /**
    * 组件的初始数据
    */
   data: {
-    song_list:[]
+    song_list: [],
+    offset: 0,
+    types: {
+      news: 1,
+      hot: 2,
+      rock: 11
+    }
   },
 
   /**
@@ -20,16 +31,21 @@ Component({
    */
   methods: {
     // 加载歌单信息
-    loadMore(){
+    loadMore() {
       var that = this;
+      // 翻页
+      that.setData({
+        offset: ++that.data.offset
+      })
       wx.request({
         url: 'http://tingapi.ting.baidu.com/v1/restserver/ting', //仅为示例，并非真实的接口地址
         data: {
-          method:"baidu.ting.billboard.billList",
-          type:1,
-          size:10,
-          offset:0
+          method: "baidu.ting.billboard.billList",
+          type: that.data.types[that.properties.channel],
+          size: 10,
+          offset: that.data.offset
         },
+
         header: {
           'content-type': 'application/json' // 默认值
         },
@@ -42,14 +58,13 @@ Component({
       })
     }
   },
-  attached: function() {
-    console.log("life")
+  attached: function () {
+    console.log(this.properties.channel)
   },
   ready: function () {
-    console.log("ready");
     console.log(store);
     this.loadMore();
-    store.on("onReachBottom",(data)=>{
+    store.on("onReachBottom", (data) => {
       console.log("我监听到index页面的触底操作了");
       this.loadMore();
     })

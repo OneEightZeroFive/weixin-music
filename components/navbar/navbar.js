@@ -5,13 +5,13 @@ Component({
    * 组件的属性列表
    */
   properties: {
-
+    
   },
   /**
    * 组件的初始数据
    */
   data: {
-    tabs: ["选项一", "选项二", "选项三"],
+    tabs: ["新歌榜", "热歌榜", "摇滚榜"],
     activeIndex: 0,
     sliderOffset: 0,
     sliderLeft: 0
@@ -28,7 +28,8 @@ Component({
       });
     }
   },
-  ready(){
+  ready() {
+    console.log(this)
     store.on("onReachBottom", (data) => {
       console.log("我监听到index页面的触底操作了");
     })
